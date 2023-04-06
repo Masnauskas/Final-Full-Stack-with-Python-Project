@@ -1,12 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 
 # Create your views here.
 
-menu = [{'title': "Home", 'url_name': "index"},
-        {'title': "Entries", 'url_name': "data"},
-        {'title': "Registration", 'url_name': "register"},
-        {'title': "Login", 'url_name': "login"},
+menu = [{'title': "Home", 'url_name': "travel:index"},
+        {'title': "Entries", 'url_name': "travel:destinations"},
+        {'title': "Registration", 'url_name': "travel:register"},
+        {'title': "Login", 'url_name': "travel:login"},
         
         ]
 
@@ -18,7 +18,7 @@ def index(request):
     }
     return render(request, 'travel_diary/index.html', context=context)
 
-def data(request):
+def destinations(request):
     data = Destination.objects.all()
     context = {
         'menu': menu,
@@ -26,7 +26,17 @@ def data(request):
         'title2': 'All travel entries',
         'data': data
     }
-    return render(request, 'travel_diary/data.html', context=context)
+    return render(request, 'travel_diary/destinations.html', context=context)
+
+def destination_entry(request, destination_id):
+    destination = get_object_or_404(Destination, id=destination_id)
+    entries = destination.travelentry_set.all()
+    context = {
+        'destination': destination,
+        'entries': entries,
+        'menu': menu
+    }
+    return render(request, 'travel_diary/destination_entries.html', context=context)
 
 def register(request):
     context = {

@@ -1,0 +1,28 @@
+{% extends 'travel_diary/base.html' %} {% block content %}
+
+<h4>{{ title2 }}</h4>
+<div class="d-flex justify-content-start gap-3">
+  {% for d in data %}
+  <div class="card" style="width: 400px">
+    <img
+      class="card-img-top"
+      src="{{d.image.url}}"
+      alt="Card image"
+      style="width: 100%"
+    />
+    <div class="card-body">
+      <h4 class="card-title">{{d.name}}</h4>
+      <p class="card-text">{{d.description}}</p>
+      <a
+        href="{% url 'travel:destination_entry' destination_id=d.id %}"
+        class="btn btn-primary"
+        >More</a
+      >
+    </div>
+  </div>
+  <br />
+  {%endfor%}
+</div>
+<br />
+<h4><a href="">Add new entry</a></h4>
+{% endblock %}
