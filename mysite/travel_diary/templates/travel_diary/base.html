@@ -42,9 +42,21 @@
     <div class="container-fluid mt-3">{% block content %} {% endblock %}</div>
     <footer class="border-top container-fluid mt-3">
       {% block footer %}
-
-      <div class="mt-3">
-        <span class="text-muted">© 2022 Company, Inc</span>
+      <div class="d-flex justify-content-between">
+        <div class="mt-3">
+          <span class="text-muted">© 2022 Company, Inc</span>
+        </div>
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex mt-3">
+          <li class="ms-3">
+            <a class="text-muted" href="#">Facebook</a>
+          </li>
+          <li class="ms-3">
+            <a class="text-muted" href="#">Twitter</a>
+          </li>
+          <li class="ms-3">
+            <a class="text-muted" href="#">Instagram</a>
+          </li>
+        </ul>
       </div>
       {% endblock %}
     </footer>
