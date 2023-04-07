@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import *
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 
@@ -20,13 +22,19 @@ def index(request):
 
 def destinations(request):
     data = Destination.objects.all()
+    paginator = Paginator(data,3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         'menu': menu,
         'title': 'Travel entries',
         'title2': 'All travel entries',
-        'data': data
+        'data': data,
+        'page_obj' : page_obj
     }
     return render(request, 'travel_diary/destinations.html', context=context)
+
+
 
 def destination_entry(request, destination_id):
     destination = get_object_or_404(Destination, id=destination_id)
