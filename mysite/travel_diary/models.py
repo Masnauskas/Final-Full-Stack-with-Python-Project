@@ -13,6 +13,11 @@ class Destination(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Destination"
+        verbose_name_plural = "Destinations"
+        ordering = ['id', ]
 
 class TravelEntry(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -39,9 +39,15 @@
           </li>
           {% endfor %}
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="text" placeholder="Search" />
-          <button class="btn btn-primary" type="button">Search</button>
+        <form method="get" class="d-flex">
+          <input
+            name="q"
+            class="form-control me-2"
+            type="text"
+            placeholder="Search"
+            value="{{ query }}"
+          />
+          <button class="btn btn-primary" type="submit">Search</button>
         </form>
       </div>
       {% endblock %}
