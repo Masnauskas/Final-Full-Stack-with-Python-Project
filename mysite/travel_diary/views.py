@@ -7,9 +7,8 @@ from django.db.models import Q
 # Create your views here.
 
 menu = [{'title': "Home", 'url_name': "travel:index"},
-        {'title': "Entries", 'url_name': "travel:destinations"},
-        {'title': "Registration", 'url_name': "travel:register"},
-        {'title': "Login", 'url_name': "travel:login"},
+        {'title': "Entries", 'url_name': "travel:destinations"}
+        
         
         ]
 
@@ -30,19 +29,7 @@ def index(request):
     }
     return render(request, 'travel_diary/index.html', context=context)
 
-# def destinations(request):
-#     data = Destination.objects.all()
-#     paginator = Paginator(data,3)
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-#     context = {
-#         'menu': menu,
-#         'title': 'Travel entries',
-#         'title2': 'All travel entries',
-#         'data': data,
-#         'page_obj' : page_obj
-#     }
-#     return render(request, 'travel_diary/destinations.html', context=context)
+
 
 def destinations(request):
     query = request.GET.get('q')
