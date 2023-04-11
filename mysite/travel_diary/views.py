@@ -14,10 +14,19 @@ menu = [{'title': "Home", 'url_name': "travel:index"},
         ]
 
 def index(request):
+    num_destinations = Destination.objects.count()
+    num_travel_entries = TravelEntry.objects.count()
+    
+    num_visists = request.session.get('num_visists',1)
+    request.session['num_visists'] = num_visists + 1
+    
     context = {
         'menu': menu,
         'title': 'Homepage',
-        'title2': 'Share and explore travel stories'
+        'title2': 'Share and explore travel stories',
+        'num_destinations' : num_destinations,
+        'num_travel_entries': num_travel_entries,
+        'num_visists': num_visists
     }
     return render(request, 'travel_diary/index.html', context=context)
 
