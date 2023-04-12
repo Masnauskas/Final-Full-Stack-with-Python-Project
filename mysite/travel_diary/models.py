@@ -8,7 +8,7 @@ class Destination(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True)
     name = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(upload_to='destination_images/')
+    image = models.ImageField(upload_to='destination_images/', blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -25,7 +25,7 @@ class TravelEntry(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
-    image = models.ImageField(upload_to='travel_entry_images/', blank=True)
+    image = models.ImageField(upload_to='travel_entry_images/', blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

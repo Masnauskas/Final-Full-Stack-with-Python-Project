@@ -2,9 +2,9 @@
 
 <h1>Destinations</h1>
 <ul>
-  {% for destination in destination_list %}
+  {% for destination in destinations %}
   <li>
-    <a href="{% url 'travel:destination_entries' destination.id %}">
+    <a href="{% url 'travel:travelentry_list' destination.id %}">
       {{ destination.name }}
     </a>
   </li>

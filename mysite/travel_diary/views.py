@@ -1,15 +1,18 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from .forms import DestinationForm, TravelEntryForm
+from django.contrib import messages
 
 
 # Create your views here.
 
 menu = [{'title': "Home", 'url_name': "travel:index"},
-        {'title': "Entries", 'url_name': "travel:destinations"}
+        {'title': "Entries", 'url_name': "travel:destinations"},
+        {'title': "Add Your Destination", 'url_name': "travel:create_destination"}
         
         
         ]
@@ -94,6 +97,60 @@ def destination_list(request):
 
 @login_required
 def travelentry_list(request, destination_id):
+    
     destination = get_object_or_404(Destination, id=destination_id, user=request.user)
     entries = destination.travelentry_set.all()
-    return render(request, 'travel_diary/travelentry_list.html', {'destination': destination, 'entries': entries})
+    context = {
+        'menu': menu,
+        'title': 'Travel entries',
+        'title2': 'Travel entries',
+        'destination': destination,
+        'entries': entries
+    }
+    
+    return render(request, 'travel_diary/travelentry_list.html', context=context)
+
+@login_required
+def create_destination(request):
+    if request.method == 'POST':
+        form = DestinationForm(request.POST)
+        if form.is_valid():
+            
+            destination = form.save(commit=False)
+            destination.user = request.user
+            destination.save()
+            messages.success(request, 'Destination created successfully!')
+            return redirect('create_travel_entry', pk=destination.pk)
+            
+    else:
+        form = DestinationForm()
+    context = {
+        'menu': menu,
+        'title': 'Add destination',
+        'title2': 'Add destination',
+        'form': form
+        
+    }
+    return render(request, 'travel_diary/create_destination.html', context=context)
+
+
+@login_required
+def create_travel_entry(request):
+    if request.method == 'POST':
+        form = TravelEntryForm(request.POST, request.FILES)
+        if form.is_valid():
+            travelentry = form.save(commit=False)
+            travelentry.user = request.user
+            travelentry.save()
+            messages.success(request, 'Entry created successfully!')
+            return redirect('destinations')
+    else:
+        form = TravelEntryForm()
+    context = {
+        'menu': menu,
+        'title': 'Add entry',
+        'title2': 'Add entry',
+        'form': form
+        
+    }
+    return render(request, 'travel_diary/create_travel_entry.html', context=context)

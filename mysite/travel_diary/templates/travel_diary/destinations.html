@@ -1,15 +1,24 @@
-{% extends 'travel_diary/base.html' %} {% block content %}
+{% extends 'travel_diary/base.html' %}{% load static %} {% block content %}
 
 <h4>{{ title2 }}</h4>
 <div class="d-flex justify-content-start gap-3">
   {% for d in page_obj %}
   <div class="card" style="width: 400px">
+    {% if d.image %}
     <img
       class="card-img-top"
       src="{{d.image.url}}"
       alt="Card image"
       style="width: 100%"
     />
+    {%else%}
+    <img
+      class="card-img-top"
+      src="{% static 'images/placeholder.png' %}"
+      alt="Card image"
+      style="width: 100%"
+    />
+    {% endif %}
     <div class="card-body">
       <h4 class="card-title">{{d.name}}</h4>
       <p class="card-text">{{d.description}}</p>
