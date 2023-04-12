@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Destination(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True)
     name = models.CharField(max_length=200)
     description = models.TextField()
     image = models.ImageField(upload_to='destination_images/')
@@ -21,7 +21,7 @@ class Destination(models.Model):
         ordering = ['id', ]
 
 class TravelEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
