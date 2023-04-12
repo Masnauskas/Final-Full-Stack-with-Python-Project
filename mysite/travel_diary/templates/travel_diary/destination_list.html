@@ -1,0 +1,16 @@
+{% extends 'travel_diary/base.html' %} {% block content %}
+
+<h1>Destinations</h1>
+<ul>
+  {% for destination in destination_list %}
+  <li>
+    <a href="{% url 'travel:destination_entries' destination.id %}">
+      {{ destination.name }}
+    </a>
+  </li>
+  {% empty %}
+  <p>No destinations found.</p>
+  {% endfor %}
+</ul>
+
+{% endblock %}

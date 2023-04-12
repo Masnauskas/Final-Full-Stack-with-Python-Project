@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -77,12 +79,21 @@ def login(request):
     }
     return render(request, 'travel_diary/login.html', context=context)
 
-# def search(request):
-#     query = request.GET.get('query')
-#     search_results = Destination.objects.filter(Q(title__icontains=query) | Q(summary__icontains=query))
-#     context = {
-#         'menu': menu,
-#         'destinations': search_results,
-#         'query': query
-#     }
-#     return render(request, 'travel_diary/search.html', context=context)
+
+@login_required
+def destination_list(request):
+    destinations = Destination.objects.filter(user=request.user)
+    context = {
+        'menu': menu,
+        'title': 'Your destinations',
+        'title2': 'Your destinations',
+        'destinations': destinations
+    }
+    
+    return render(request, 'travel_diary/destination_list.html', context=context)
+
+@login_required
+def travelentry_list(request, destination_id):
+    destination = get_object_or_404(Destination, id=destination_id, user=request.user)
+    entries = destination.travelentry_set.all()
+    return render(request, 'travel_diary/travelentry_list.html', {'destination': destination, 'entries': entries})

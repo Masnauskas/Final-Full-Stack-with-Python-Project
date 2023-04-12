@@ -1,0 +1,12 @@
+{% extends 'travel_diary/base.html' %} {% block content %}
+
+<h1>{{ destination.name }} Entries</h1>
+<ul>
+  {% for entry in entry_list %}
+  <li>{{ entry.title }}</li>
+  {% empty %}
+  <p>No entries found.</p>
+  {% endfor %}
+</ul>
+
+{% endblock %}
