@@ -113,14 +113,14 @@ def travelentry_list(request, destination_id):
 @login_required
 def create_destination(request):
     if request.method == 'POST':
-        form = DestinationForm(request.POST)
+        form = DestinationForm(request.POST, request.FILES)
         if form.is_valid():
             
             destination = form.save(commit=False)
             destination.user = request.user
             destination.save()
             messages.success(request, 'Destination created successfully!')
-            return redirect('create_travel_entry', pk=destination.pk)
+            return redirect('travel:create_travel_entry', destination_id=destination.id)
             
     else:
         form = DestinationForm()
@@ -135,22 +135,24 @@ def create_destination(request):
 
 
 @login_required
-def create_travel_entry(request):
+def create_travel_entry(request, destination_id):
+    destination = Destination.objects.get(id=destination_id)
     if request.method == 'POST':
-        form = TravelEntryForm(request.POST, request.FILES)
+        form = TravelEntryForm(request.POST, request.FILES, destination_id=destination_id)
         if form.is_valid():
-            travelentry = form.save(commit=False)
-            travelentry.user = request.user
-            travelentry.save()
-            messages.success(request, 'Entry created successfully!')
-            return redirect('destinations')
+            travel_entry = form.save(commit=False)
+            travel_entry.destination = destination
+            travel_entry.save()
+            messages.success(request, 'Travel entry added successfully.')
+            return redirect('travel:destinations', destination_id=destination_id)
     else:
         form = TravelEntryForm()
     context = {
         'menu': menu,
         'title': 'Add entry',
         'title2': 'Add entry',
-        'form': form
+        'form': form,
+        'destination': destination
         
     }
     return render(request, 'travel_diary/create_travel_entry.html', context=context)
