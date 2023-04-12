@@ -44,17 +44,25 @@
               Logout
             </a>
           </li>
+          <form method="get" class="d-flex">
+            <input
+              name="q"
+              class="form-control me-2"
+              type="text"
+              placeholder="Search"
+              value="{{ query }}"
+            />
+            <button class="btn btn-primary" type="submit">Search</button>
+          </form>
         </ul>
-        <form method="get" class="d-flex">
-          <input
-            name="q"
-            class="form-control me-2"
-            type="text"
-            placeholder="Search"
-            value="{{ query }}"
-          />
-          <button class="btn btn-primary" type="submit">Search</button>
-        </form>
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="">
+              Logged in as: {{ user.get_username }}
+            </a>
+          </li>
+        </ul>
         {%else%}
         <ul class="navbar-nav">
           <li class="nav-item">
