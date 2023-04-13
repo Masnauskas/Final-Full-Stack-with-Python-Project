@@ -44,13 +44,12 @@
               Logout
             </a>
           </li>
-          <form method="get" class="d-flex">
+          <form method="get" class="d-flex" action="{% url 'travel:search' %}">
             <input
-              name="q"
+              name="query"
               class="form-control me-2"
               type="text"
               placeholder="Search"
-              value="{{ query }}"
             />
             <button class="btn btn-primary" type="submit">Search</button>
           </form>

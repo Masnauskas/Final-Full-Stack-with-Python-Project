@@ -2,9 +2,49 @@
 
 <h2>Create a new destination</h2>
 <form method="POST" enctype="multipart/form-data">
-  {% csrf_token %} {{ form.as_p }}
+  {% csrf_token %}
+  <!-- <br />
+  {{ form.name.label_tag }} {{ form.name }} {% if form.name.errors %}
+  <div class="error">
+    {% for error in form.name.errors %}
+    <span>{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <br />
+  {{ form.description.label_tag }} {{ form.description }} {# prettier-ignore #}
+  {% if form.description.errors %}
+
+  <div class="error">
+    {% for error in form.description.errors %}
+    <span>{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <br />
+  {{ form.image.label_tag }} {{ form.image }} {% if form.image.errors %}
+  <div class="error">
+    {% for error in form.image.errors %}
+    <span>{{ error }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <br />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<br />
+<br /> -->
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {% if form.errors %}
+    <div class="alert alert-danger">
+      <strong>Error!</strong> Please correct the following errors:<br />
+      {% for field, errors in form.errors.items %} {{ field }}:
+      {#prettier-ignore #} {{errors|join:"," }}<br />
+      {% endfor %}
+    </div>
+    {% endif %} {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <br />
 
-{% endblock %}
+  {% endblock %}
+</form>

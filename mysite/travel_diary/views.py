@@ -37,24 +37,37 @@ def index(request):
 
 
 def destinations(request):
-    query = request.GET.get('q')
-    if query:
-        data = Destination.objects.filter(Q(name__icontains=query))
-    else:
-        data = Destination.objects.all()
+   
+    
+    data = Destination.objects.all()
     paginator = Paginator(data,3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
     context = {
         'menu': menu,
         'title': 'Travel entries',
         'title2': 'All travel entries',
-        'data': data,
         'page_obj' : page_obj
     }
     return render(request, 'travel_diary/destinations.html', context=context)
 
-
+def search(request):
+    query = request.GET.get('query')
+    if query:
+        search_results = Destination.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    else:
+        search_results = Destination.objects.all()
+    paginator = Paginator(search_results, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'menu': menu,
+        'title': 'Search results' if query else 'Travel entries',
+        'query': query,
+        'page_obj': page_obj,
+    }
+    return render(request, 'travel_diary/search.html', context)
 
 def destination_entry(request, destination_id):
     destination = get_object_or_404(Destination, id=destination_id)
@@ -138,15 +151,16 @@ def create_destination(request):
 def create_travel_entry(request, destination_id):
     destination = Destination.objects.get(id=destination_id)
     if request.method == 'POST':
-        form = TravelEntryForm(request.POST, request.FILES, destination_id=destination_id)
+        form = TravelEntryForm(request.POST, request.FILES)
         if form.is_valid():
             travel_entry = form.save(commit=False)
             travel_entry.destination = destination
             travel_entry.save()
             messages.success(request, 'Travel entry added successfully.')
-            return redirect('travel:destinations', destination_id=destination_id)
+            return redirect('travel:destinations')
     else:
         form = TravelEntryForm()
+    
     context = {
         'menu': menu,
         'title': 'Add entry',
