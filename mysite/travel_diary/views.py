@@ -6,7 +6,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import DestinationForm, TravelEntryForm
 from django.contrib import messages
-
+from django.contrib.auth.forms import User
+from django.views.decorators.csrf import csrf_protect
+from django.urls import reverse
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 
@@ -87,13 +91,13 @@ def register(request):
     }
     return render(request, 'travel_diary/registration.html', context=context)
 
-def login(request):
-    context = {
-        'menu': menu,
-        'title': 'Login',
-        'title2': 'Login'
-    }
-    return render(request, 'travel_diary/login.html', context=context)
+# def login(request):
+#     context = {
+#         'menu': menu,
+#         'title': 'Login',
+#         'title2': 'Login'
+#     }
+#     return render(request, 'travel_diary/login.html', context=context)
 
 
 @login_required
@@ -170,3 +174,37 @@ def create_travel_entry(request, destination_id):
         
     }
     return render(request, 'travel_diary/create_travel_entry.html', context=context)
+
+@csrf_protect
+def register(request):
+    if request.method == "POST":
+        
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+        
+        if password != password2:
+            messages.error(request, 'Password mismatch!')
+            return redirect('travel:register')
+
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            for error in e:
+                messages.error(request, error)
+            return redirect('travel:register')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, f'Username {username} already exists.')
+            return redirect('travel:register')
+                
+        if User.objects.filter(email=email).exists():
+            messages.error(request, f'Email {email} is already in use. Please choose another.')
+            return redirect('travel:register')
+        
+        user = User.objects.create_user(username=username, email=email, password=password)
+        messages.success(request, 'Registration successful! You can now login.')
+        return redirect(reverse('login'))
+    
+    return render(request, 'travel_diary/register.html')

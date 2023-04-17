@@ -3,7 +3,9 @@
 <h4>{{ title2 }}</h4>
 
 {% if form.errors %}
-<p>Login Error, please try again!</p>
+<div class="alert alert-danger" role="alert">
+  Login Error, please try again!
+</div>
 {% endif %} {% if next %} {% if user.is_authenticated %}
 <p>Pleae login.</p>
 {% endif %} {% endif %}

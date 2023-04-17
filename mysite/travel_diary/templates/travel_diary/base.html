@@ -81,13 +81,22 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="#"> Register </a>
+            <a class="nav-link active" href="{% url 'travel:register'%}">
+              Register
+            </a>
           </li>
         </ul>
         {%endif%}
       </div>
       {% endblock %}
     </nav>
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
 
     <div class="container-fluid mt-3">{% block content %} {% endblock %}</div>
     <footer class="border-top container-fluid mt-3">
