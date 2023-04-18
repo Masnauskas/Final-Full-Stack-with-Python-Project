@@ -14,13 +14,12 @@ from django.core.exceptions import ValidationError
 
 # Create your views here.
 
+# NAVIGATION MENU
 menu = [{'title': "Home", 'url_name': "travel:index"},
         {'title': "Entries", 'url_name': "travel:destinations"},
         {'title': "Add Your Destination", 'url_name': "travel:create_destination"}
-        
-        
         ]
-
+# INDEX
 def index(request):
     num_destinations = Destination.objects.count()
     num_travel_entries = TravelEntry.objects.count()
@@ -39,10 +38,8 @@ def index(request):
     return render(request, 'travel_diary/index.html', context=context)
 
 
-
+# LISTING ALL DESTINATIONS
 def destinations(request):
-   
-    
     data = Destination.objects.all()
     paginator = Paginator(data,3)
     page_number = request.GET.get('page')
@@ -56,12 +53,14 @@ def destinations(request):
     }
     return render(request, 'travel_diary/destinations.html', context=context)
 
+# SEARCH ALL DESTINATIONS
 def search(request):
     query = request.GET.get('query')
     if query:
         search_results = Destination.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
     else:
         search_results = Destination.objects.all()
+    # pagination
     paginator = Paginator(search_results, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -73,6 +72,7 @@ def search(request):
     }
     return render(request, 'travel_diary/search.html', context)
 
+# TRAVEL ENTRY FOR SPECIFIC DESTINATION
 def destination_entry(request, destination_id):
     destination = get_object_or_404(Destination, id=destination_id)
     entries = destination.travelentry_set.all()
@@ -83,6 +83,7 @@ def destination_entry(request, destination_id):
     }
     return render(request, 'travel_diary/destination_entries.html', context=context)
 
+# REGISTRATION
 def register(request):
     context = {
         'menu': menu,
@@ -91,9 +92,7 @@ def register(request):
     }
     return render(request, 'travel_diary/registration.html', context=context)
 
-
-
-
+# USER PROFILE WHICH LISTS ALL USER ENTERED DESTINATION BY USING THAT SPECIFIC LOGGED-IN USER ID
 @login_required
 def destination_list(request):
     destinations = Destination.objects.filter(user=request.user)
@@ -106,6 +105,7 @@ def destination_list(request):
     
     return render(request, 'travel_diary/destination_list.html', context=context)
 
+# LISTS ALL TRAVEL ENTRIES FOR A DESTINATION, AGAIN ONLY FOR LOGGED IN USER BY USING LOGGED IN USER ID
 @login_required
 def travelentry_list(request, destination_id):
     
@@ -121,6 +121,7 @@ def travelentry_list(request, destination_id):
     
     return render(request, 'travel_diary/travelentry_list.html', context=context)
 
+# CREATE NEW DESTINATION
 @login_required
 def create_destination(request):
     if request.method == 'POST':
@@ -144,7 +145,7 @@ def create_destination(request):
     }
     return render(request, 'travel_diary/create_destination.html', context=context)
 
-
+# CREATE TRAVEL ENTRY FOR THAT DESTINATION
 @login_required
 def create_travel_entry(request, destination_id):
     destination = Destination.objects.get(id=destination_id)
@@ -169,10 +170,10 @@ def create_travel_entry(request, destination_id):
     }
     return render(request, 'travel_diary/create_travel_entry.html', context=context)
 
+# REGISTRATION
 @csrf_protect
 def register(request):
     if request.method == "POST":
-        
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
@@ -181,18 +182,17 @@ def register(request):
         if password != password2:
             messages.error(request, 'Password mismatch!')
             return redirect('travel:register')
-
         try:
             validate_password(password)
         except ValidationError as e:
             for error in e:
                 messages.error(request, error)
             return redirect('travel:register')
-
+        # CHECK IF USERNAME ALREADY EXISTS
         if User.objects.filter(username=username).exists():
             messages.error(request, f'Username {username} already exists.')
             return redirect('travel:register')
-                
+        # CHECK IF EMAIL ALREADY EXISTS 
         if User.objects.filter(email=email).exists():
             messages.error(request, f'Email {email} is already in use. Please choose another.')
             return redirect('travel:register')
@@ -203,7 +203,7 @@ def register(request):
     
     return render(request, 'travel_diary/register.html')
 
-# DELETE destination
+# DELETE DESTINATION
 @login_required
 def destination_delete(request, pk):
     destination = get_object_or_404(Destination, pk=pk)
@@ -215,7 +215,7 @@ def destination_delete(request, pk):
         messages.warning(request, "Deletion cancelled.")
         return redirect('travel:user_destinations')
     
-# DELETE destination entry
+# DELETE DESTINATION ENTRY
 @login_required
 def travel_entry_delete(request, pk, entry_pk):
     entry = get_object_or_404(TravelEntry, pk=entry_pk)
