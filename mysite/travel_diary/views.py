@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.urls import reverse
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+import os
 
 # Create your views here.
 
@@ -23,7 +24,7 @@ menu = [{'title': "Home", 'url_name': "travel:index"},
 def index(request):
     num_destinations = Destination.objects.count()
     num_travel_entries = TravelEntry.objects.count()
-    
+    image_names = os.listdir('media/destination_images')
     num_visists = request.session.get('num_visists',1)
     request.session['num_visists'] = num_visists + 1
     
@@ -33,7 +34,8 @@ def index(request):
         'title2': 'Share and explore travel stories',
         'num_destinations' : num_destinations,
         'num_travel_entries': num_travel_entries,
-        'num_visists': num_visists
+        'num_visists': num_visists,
+        'image_names': image_names,
     }
     return render(request, 'travel_diary/index.html', context=context)
 
