@@ -1,21 +1,25 @@
 {% extends 'travel_diary/base.html' %} {% block content %}
 
 <h4>{{ destination.name }}</h4>
-<div class="d-flex justify-content-start gap-3">
+<div class="row">
   {% for entry in entries %}
-  <div class="card" style="width: 400px">
-    <img
-      class="card-img-top"
-      src="{{ entry.image.url }}"
-      alt="{{ entry.title }}"
-      style="width: 100%"
-    />
-    <div class="card-body">
-      <h4 class="card-title">{{ entry.title }}</h4>
-      <p class="card-text">{{ entry.text }}</p>
+  <div class="col">
+    <div class="card" style="width: 400px">
+      {% if entry.image %}
+      <img
+        class="card-img-top"
+        src="{{ entry.image.url }}"
+        alt="{{ entry.title }}"
+        style="width: 100%"
+      />
+      {% endif %}
+      <div class="card-body">
+        <h4 class="card-title">{{ entry.title }}</h4>
+        <p class="card-text">{{ entry.text }}</p>
+      </div>
     </div>
+    <br />
   </div>
-  <br />
   {%endfor%}
 </div>
 <br />

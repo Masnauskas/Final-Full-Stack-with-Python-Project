@@ -208,3 +208,28 @@ def register(request):
         return redirect(reverse('login'))
     
     return render(request, 'travel_diary/register.html')
+
+# DELETE destination
+@login_required
+def destination_delete(request, pk):
+    destination = get_object_or_404(Destination, pk=pk)
+    if request.method == 'POST':
+        destination.delete()
+        messages.success(request, f"Destination '{destination.name}' has been deleted.")
+        return redirect('travel:user_destinations')
+    else:
+        messages.warning(request, "Deletion cancelled.")
+        return redirect('travel:user_destinations')
+    
+# DELETE destination entry
+@login_required
+def travel_entry_delete(request, pk, entry_pk):
+    entry = get_object_or_404(TravelEntry, pk=entry_pk)
+    if request.method == 'POST':
+        entry.delete()
+        messages.success(request, f"Travel Entry '{entry.title}' has been deleted.")
+        return redirect('travel:travelentry_list', destination_id=pk)
+    else:
+        messages.warning(request, "Deletion cancelled.")
+        return redirect('travel:travelentry_list')
+    
