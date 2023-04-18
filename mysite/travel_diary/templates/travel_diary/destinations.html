@@ -1,4 +1,4 @@
-{% extends 'travel_diary/base.html' %}{% load static %} {% block content %}
+{% extends 'travel_diary/base.html' %}{% load static %}{% block content %}
 
 <h4>{{ title2 }}</h4>
 <div class="d-flex justify-content-start gap-3">
@@ -14,7 +14,7 @@
     {%else%}
     <img
       class="card-img-top"
-      src="{% static 'images/placeholder.png' %}"
+      src="{% static 'travel_diary/images/placeholder.png' %}"
       alt="Card image"
       style="width: 100%"
     />

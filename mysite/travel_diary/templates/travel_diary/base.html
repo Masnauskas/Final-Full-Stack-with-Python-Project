@@ -98,7 +98,9 @@
     </div>
     {% endfor %}
 
-    <div class="container-fluid mt-3">{% block content %} {% endblock %}</div>
+    <div class="custom-background container-fluid mt-3">
+      {% block content %} {% endblock %}
+    </div>
     <footer class="border-top container-fluid mt-3">
       {% block footer %}
       <div class="d-flex justify-content-between">
