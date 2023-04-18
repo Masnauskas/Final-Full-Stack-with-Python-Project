@@ -91,13 +91,7 @@ def register(request):
     }
     return render(request, 'travel_diary/registration.html', context=context)
 
-# def login(request):
-#     context = {
-#         'menu': menu,
-#         'title': 'Login',
-#         'title2': 'Login'
-#     }
-#     return render(request, 'travel_diary/login.html', context=context)
+
 
 
 @login_required
