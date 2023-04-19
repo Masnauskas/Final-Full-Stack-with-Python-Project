@@ -228,4 +228,22 @@ def travel_entry_delete(request, pk, entry_pk):
     else:
         messages.warning(request, "Deletion cancelled.")
         return redirect('travel:travelentry_list')
-    
+
+# EDIT DESTINATION 
+@login_required
+def edit_destination(request, id):
+    destination = get_object_or_404(Destination, id=id, user=request.user)
+    if request.method == 'POST':
+        form = DestinationForm(request.POST, instance=destination)
+        if form.is_valid():
+            form.save()
+            return redirect('travel:user_destinations')
+    else:
+        form = DestinationForm(instance=destination)
+    context = {
+        'menu': menu,
+        'title': 'Edit destination',
+        'title2': 'Edit destination',
+        'form': form,
+    }
+    return render(request, 'travel_diary/edit_destination.html', context=context)

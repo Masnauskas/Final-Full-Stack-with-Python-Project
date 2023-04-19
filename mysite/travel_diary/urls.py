@@ -15,5 +15,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('destination/<int:pk>/delete/', destination_delete, name='destination_delete'),
     path('destination/<int:pk>/entry/<int:entry_pk>/delete/', travel_entry_delete, name='travelentry_delete'),
+    path('destination/edit/<int:id>/', edit_destination, name='edit_destination'),
         
 ]
