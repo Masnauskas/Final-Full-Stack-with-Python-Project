@@ -47,14 +47,11 @@
   </div>
   {% endfor %}
 </div>
-<form
-  method="POST"
-  action="{% url 'travel:create_travel_entry' destination.id %}"
+<a
+  href="{% url 'travel:create_travel_entry' destination_id=destination.id %}"
+  class="btn btn-primary"
+  >Add Travel Entry</a
 >
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ request.path }}" />
-  <button type="submit" class="btn btn-primary">Add Travel Entry</button>
-</form>
 {% else %}
 <p>No travel entries yet for '{{ destination.name }}'.</p>
 <form
