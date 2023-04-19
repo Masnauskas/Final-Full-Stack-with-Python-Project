@@ -16,5 +16,7 @@ urlpatterns = [
     path('destination/<int:pk>/delete/', destination_delete, name='destination_delete'),
     path('destination/<int:pk>/entry/<int:entry_pk>/delete/', travel_entry_delete, name='travelentry_delete'),
     path('destination/edit/<int:id>/', edit_destination, name='edit_destination'),
+    path('destination/<int:destination_id>/entry/<int:entry_id>/edit/', edit_travel_entry, name='travelentry_edit'),
+
         
 ]

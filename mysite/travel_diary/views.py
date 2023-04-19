@@ -237,13 +237,35 @@ def edit_destination(request, id):
         form = DestinationForm(request.POST, instance=destination)
         if form.is_valid():
             form.save()
+            messages.success(request, f"Destination '{destination.name}' has been updated.")
             return redirect('travel:user_destinations')
     else:
         form = DestinationForm(instance=destination)
     context = {
         'menu': menu,
-        'title': 'Edit destination',
-        'title2': 'Edit destination',
+        'title': f'Edit destination: {destination.name}',
+        'title2': f'Edit destination: {destination.name}',
         'form': form,
     }
     return render(request, 'travel_diary/edit_destination.html', context=context)
+
+# EDIT DESTINATION ENTRY
+@login_required
+def edit_travel_entry(request, destination_id, entry_id):
+    destination = get_object_or_404(Destination, id=destination_id, user=request.user)
+    entry = get_object_or_404(TravelEntry, id=entry_id, destination=destination)
+    if request.method == 'POST':
+        form = TravelEntryForm(request.POST, request.FILES, instance=entry)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Travel Entry '{entry.title}' has been updated.")
+            return redirect('travel:travelentry_list', destination_id=destination_id)
+    else:
+        form = TravelEntryForm(instance=entry)
+    context = {
+        'menu': menu,
+        'title': f'Edit entry: {entry.title}',
+        'title2': f'Edit entry: {entry.title}',
+        'form': form,
+    }
+    return render(request, 'travel_diary/edit_travel_entry.html', context=context)
