@@ -1,3 +1,18 @@
 body {
   background-color: lightgrey;
 }
+.carousel-item img {
+  max-width: 800px;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+}
+.carousel-inner {
+  max-height: 400px;
+}
+.custom-css-index-title {
+  text-align: center;
+}
+.custom-css-index-visits {
+  text-align: center;
+}
