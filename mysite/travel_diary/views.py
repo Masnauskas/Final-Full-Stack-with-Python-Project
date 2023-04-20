@@ -41,6 +41,7 @@ def index(request):
 
 
 # LISTING ALL DESTINATIONS
+@login_required
 def destinations(request):
     data = Destination.objects.all()
     paginator = Paginator(data,3)
@@ -56,14 +57,36 @@ def destinations(request):
     return render(request, 'travel_diary/destinations.html', context=context)
 
 # SEARCH ALL DESTINATIONS
+# old search
+# @login_required
+# def search(request):
+#     query = request.GET.get('query')
+#     if query:
+#         search_results = Destination.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+#     else:
+#         search_results = Destination.objects.all()
+#     # pagination
+#     paginator = Paginator(search_results, 3)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     context = {
+#         'menu': menu,
+#         'title': 'Search results' if query else 'Travel entries',
+#         'query': query,
+#         'page_obj': page_obj,
+#     }
+#     return render(request, 'travel_diary/search.html', context)
+
+@login_required
 def search(request):
     query = request.GET.get('query')
     if query:
-        search_results = Destination.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        destinations = Destination.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        entries = TravelEntry.objects.filter(destination__in=destinations)
     else:
-        search_results = Destination.objects.all()
+        entries = TravelEntry.objects.all()
     # pagination
-    paginator = Paginator(search_results, 3)
+    paginator = Paginator(entries, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -74,16 +97,25 @@ def search(request):
     }
     return render(request, 'travel_diary/search.html', context)
 
+
 # TRAVEL ENTRY FOR SPECIFIC DESTINATION
+
+
+@login_required
 def destination_entry(request, destination_id):
     destination = get_object_or_404(Destination, id=destination_id)
+    query = request.GET.get('query')
     entries = destination.travelentry_set.all()
+    if query:
+        entries = entries.filter(title__icontains=query)
     context = {
         'destination': destination,
         'entries': entries,
         'menu': menu
     }
     return render(request, 'travel_diary/destination_entries.html', context=context)
+
+
 
 # REGISTRATION
 def register(request):

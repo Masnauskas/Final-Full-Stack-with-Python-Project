@@ -1,12 +1,12 @@
 {% extends 'travel_diary/base.html' %}{% load static %} {% block content %}
 <h4>Search results for query '{{query}}'</h4>
 <div class="d-flex justify-content-start gap-3">
-  {% for d in page_obj %}
+  {% for entry in page_obj %}
   <div class="card" style="width: 400px">
-    {% if d.image %}
+    {% if entry.destination.image %}
     <img
       class="card-img-top"
-      src="{{d.image.url}}"
+      src="{{entry.destination.image.url}}"
       alt="Card image"
       style="width: 100%"
     />
@@ -19,10 +19,10 @@
     />
     {% endif %}
     <div class="card-body">
-      <h4 class="card-title">{{d.name}}</h4>
-      <p class="card-text">{{d.description}}</p>
+      <h4 class="card-title">{{entry.title}}</h4>
+      <p class="card-text">{{entry.text}}</p>
       <a
-        href="{% url 'travel:destination_entry' destination_id=d.id %}"
+        href="{% url 'travel:destination_entry' destination_id=entry.destination.id %}"
         class="btn btn-primary"
         >More</a
       >

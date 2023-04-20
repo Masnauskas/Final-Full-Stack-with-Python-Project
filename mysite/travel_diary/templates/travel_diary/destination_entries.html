@@ -1,4 +1,19 @@
-{% extends 'travel_diary/base.html' %}{% block search_field %} {% endblock %}<!-- prettier-ignore -->
+{% extends 'travel_diary/base.html' %}{% block search_field %}
+<form
+  method="get"
+  class="d-flex"
+  action="{% url 'travel:destination_entry' destination.id %}"
+>
+  <input
+    name="query"
+    class="form-control me-2"
+    type="text"
+    placeholder="Search"
+    value="{{ request.GET.query }}"
+  />
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
+{% endblock %}<!-- prettier-ignore -->
 {% block content %}
 
 <h4>{{ destination.name }}</h4>
