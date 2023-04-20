@@ -45,6 +45,10 @@
               Logout
             </a>
           </li>
+          <!-- SEARCH -->
+          <!-- prettier-ignore -->
+          {% block search_field %}
+          {% if not request.resolver_match.url_name == 'travel:destination_entry' %}
           <form method="get" class="d-flex" action="{% url 'travel:search' %}">
             <input
               name="query"
@@ -54,6 +58,7 @@
             />
             <button class="btn btn-primary" type="submit">Search</button>
           </form>
+          {% endif %} {% endblock %}
         </ul>
 
         <ul class="navbar-nav">
