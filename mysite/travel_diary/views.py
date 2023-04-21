@@ -301,3 +301,7 @@ def edit_travel_entry(request, destination_id, entry_id):
         'form': form,
     }
     return render(request, 'travel_diary/edit_travel_entry.html', context=context)
+
+
+# def password_reset_confirm(request):
+#     return render(request, 'registration/password_reset_confirm.html')

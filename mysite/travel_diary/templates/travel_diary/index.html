@@ -1,7 +1,11 @@
 {% extends 'travel_diary/base.html' %}{% load static %}{% block content %}
 <h4 class="custom-css-index-title">{{ title2 }}</h4>
 
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+<div
+  id="carouselExampleCaptions"
+  class="carousel slide"
+  data-bs-ride="carousel"
+>
   <div class="carousel-indicators">
     <button
       type="button"
@@ -25,7 +29,7 @@
     ></button>
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item active">
+    <div class="carousel-item active" data-bs-interval="10000">
       <img
         src="{% static 'travel_diary/images/alicante.jpg' %}"
         class="d-block w-100 mx-auto"
@@ -36,7 +40,7 @@
         <p>Share your holiday pictures</p>
       </div>
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item" data-bs-interval="10000">
       <img
         src="{% static 'travel_diary/images/aarhus.jpg' %}"
         class="d-block w-100 mx-auto"
@@ -47,7 +51,7 @@
         <p>Create, update and maintain your stories</p>
       </div>
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item" data-bs-interval="10000">
       <img
         src="{% static 'travel_diary/images/berlin.jpg' %}"
         class="d-block w-100 mx-auto"
@@ -80,9 +84,12 @@
 </div>
 <br />
 <div class="custom-css-index-visits">
+  <h4>Thank you for visiting our website!</h4>
+  <p>Number of your visists: {{num_visists}}.</p>
+  <br />
+  <h4>So far people have shared:</h4>
   <p>Number of travel destinations shared: {{num_destinations}}.</p>
   <p>Number of travel entries made: {{num_travel_entries}}.</p>
-  <p>Number of your visists: {{num_visists}}.</p>
 </div>
 <br />
 
