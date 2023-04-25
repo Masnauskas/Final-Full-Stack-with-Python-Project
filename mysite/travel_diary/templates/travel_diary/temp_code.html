@@ -1,0 +1,59 @@
+<form method="POST" action="{% url 'travel:user_destinations' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="{{ user_form.username.id_for_label }}">Username:</label>
+    {{ user_form.username }} {% if user_form.username.errors %}
+    <!-- prettier-ignore -->
+    {% for error in user_form.username.errors %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% endif %}
+  </div>
+  <div class="form-group">
+    <label for="{{ user_form.email.id_for_label }}">Email:</label>
+    {{ user_form.email }} {% if user_form.email.errors %}
+    <!-- prettier-ignore -->
+    {% for error in user_form.email.errors %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% endif %}
+  </div>
+  <hr />
+  <h5>Change your password:</h5>
+  <div class="form-group">
+    <label for="{{ change_password_form.old_password.id_for_label }}"
+      >Old Password:</label
+    >
+    {{ change_password_form.old_password }}
+    <!-- prettier-ignore -->
+    {% if change_password_form.old_password.errors %}
+    <!-- prettier-ignore -->
+    {% for error in change_password_form.old_password.errors %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% endif %}
+  </div>
+  <div class="form-group">
+    <label for="{{ change_password_form.new_password1.id_for_label }}"
+      >New Password:</label
+    >
+    {{ change_password_form.new_password1 }}
+    <!-- prettier-ignore -->
+    {% if change_password_form.new_password1.errors %}
+    <!-- prettier-ignore -->
+    {% for error in change_password_form.new_password1.errors %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% endif %}
+  </div>
+  <div class="form-group">
+    <label for="{{ change_password_form.new_password2.id_for_label }}"
+      >Confirm New Password:</label
+    >
+    {{ change_password_form.new_password2 }}
+    <!-- prettier-ignore -->
+    {% if change_password_form.new_password2.errors %}
+    <!-- prettier-ignore -->
+    {% for error in change_password_form.new_password2.errors %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% endif %}
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Save changes</button>
+</form>
