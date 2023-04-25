@@ -1,6 +1,6 @@
 {% extends 'travel_diary/base.html' %}{% block search_field %} {% endblock %}<!-- prettier-ignore -->{% block content %}
 
-<h2>Create a new travel entry</h2>
+<h2>Create a new travel entry for '{{ default_destination }}'</h2>
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %} {{ form.as_p }}
   <button type="submit" class="btn btn-primary">Submit</button>

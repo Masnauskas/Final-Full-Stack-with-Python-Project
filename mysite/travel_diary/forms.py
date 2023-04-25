@@ -61,10 +61,14 @@ class TravelEntryForm(forms.ModelForm):
         }
     )
 
+    def __init__(self, default_destination, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['destination'].initial = default_destination
+        self.fields['destination'].widget.attrs['disabled'] = True  # make the field disabled
+
     class Meta:
         model = TravelEntry
-        fields = ('destination', 'title', 'text', 'image')
-
+        fields = ('title', 'text', 'image')
 
    
         

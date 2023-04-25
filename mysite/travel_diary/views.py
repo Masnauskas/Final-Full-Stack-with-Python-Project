@@ -14,10 +14,6 @@ from django.core.exceptions import ValidationError
 import os
 from django.contrib.auth import update_session_auth_hash
 
-from django.shortcuts import render, redirect
-
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -106,8 +102,6 @@ def search(request):
 
 
 # TRAVEL ENTRY FOR SPECIFIC DESTINATION
-
-
 @login_required
 def destination_entry(request, destination_id):
     destination = get_object_or_404(Destination, id=destination_id)
@@ -218,8 +212,9 @@ def create_destination(request):
 @login_required
 def create_travel_entry(request, destination_id):
     destination = Destination.objects.get(id=destination_id)
+    default_destination = destination
     if request.method == 'POST':
-        form = TravelEntryForm(request.POST, request.FILES)
+        form = TravelEntryForm(default_destination, request.POST, request.FILES)
         if form.is_valid():
             travel_entry = form.save(commit=False)
             travel_entry.destination = destination
@@ -227,14 +222,15 @@ def create_travel_entry(request, destination_id):
             messages.success(request, 'Travel entry added successfully.')
             return redirect('travel:destinations')
     else:
-        form = TravelEntryForm()
+        form = TravelEntryForm(default_destination)
     
     context = {
         'menu': menu,
         'title': 'Add entry',
         'title2': 'Add entry',
         'form': form,
-        'destination': destination
+        'destination': destination,
+        'default_destination' : default_destination
         
     }
     return render(request, 'travel_diary/create_travel_entry.html', context=context)
