@@ -1,0 +1,96 @@
+{% extends 'travel_diary/base.html' %}{% load static %}{% block content %}
+<h4 class="custom-css-index-title">{{ title2 }}</h4>
+
+<div
+  id="carouselExampleCaptions"
+  class="carousel slide"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-indicators">
+    <button
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide-to="0"
+      class="active"
+      aria-current="true"
+      aria-label="Slide 1"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide-to="1"
+      aria-label="Slide 2"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide-to="2"
+      aria-label="Slide 3"
+    ></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="10000">
+      <img
+        src="{% static 'travel_diary/images/alicante.jpg' %}"
+        class="d-block w-100 mx-auto"
+        alt="alicante"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Share pictures</h5>
+        <p>Share your holiday pictures</p>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="10000">
+      <img
+        src="{% static 'travel_diary/images/aarhus.jpg' %}"
+        class="d-block w-100 mx-auto"
+        alt="aarhus"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Share stories</h5>
+        <p>Create, update and maintain your stories</p>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="10000">
+      <img
+        src="{% static 'travel_diary/images/berlin.jpg' %}"
+        class="d-block w-100 mx-auto"
+        alt="berlin"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h5>See what others have shared</h5>
+        <p>Look through other people stories</p>
+      </div>
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleCaptions"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleCaptions"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<br />
+<div class="custom-css-index-visits">
+  <h4>Thank you for visiting our website!</h4>
+  <p>Number of your visists: {{num_visists}}.</p>
+  <br />
+  <h4>So far people have shared:</h4>
+  <p>Number of travel destinations shared: {{num_destinations}}.</p>
+  <p>Number of travel entries made: {{num_travel_entries}}.</p>
+</div>
+<br />
+
+{% endblock %}

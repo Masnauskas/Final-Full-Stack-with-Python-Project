@@ -1,0 +1,71 @@
+{% extends 'travel_diary/base.html' %}{% load static %} {% block content %}
+<h4>Search results for query '{{query}}'</h4>
+<div class="d-flex justify-content-start gap-3">
+  {% for entry in page_obj %}
+  <div class="card" style="width: 400px">
+    {% if entry.destination.image %}
+    <img
+      class="card-img-top"
+      src="{{entry.destination.image.url}}"
+      alt="Card image"
+      style="width: 100%"
+    />
+    {% else %}
+    <img
+      class="card-img-top"
+      src="{% static 'travel_diary/images/placeholder.png' %}"
+      alt="Card image"
+      style="width: 100%"
+    />
+    {% endif %}
+    <div class="card-body">
+      <h4 class="card-title">{{entry.title}}</h4>
+      <p class="card-text">{{entry.text}}</p>
+      <!-- <a
+        href="{% url 'travel:destination_entry' destination_id=entry.destination.id %}"
+        class="btn btn-primary"
+        >More</a
+      > -->
+    </div>
+  </div>
+  <br />
+  {% endfor %}
+</div>
+<div class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a class="btn btn-primary btn-sm" href="?query={{ query }}&page=1"
+      >&laquo; first</a
+    >
+    <a
+      class="btn btn-primary btn-sm"
+      href="?query={{ query }}&page={{ page_obj.previous_page_number }}"
+      >previous</a
+    >
+    {% endif %}
+
+    <span class="current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+    <a
+      class="btn btn-primary btn-sm"
+      href="?query={{ query }}&page={{ page_obj.next_page_number }}"
+      >next</a
+    >
+    <a
+      class="btn btn-primary btn-sm"
+      href="?query={{ query }}&page={{ page_obj.paginator.num_pages }}"
+      >last &raquo;</a
+    >
+    {% endif %}
+  </span>
+</div>
+<br />
+<h4>
+  <a class="btn btn-primary" href="{% url 'travel:create_destination'%}"
+    >Add new entry</a
+  >
+</h4>
+{% endblock %}

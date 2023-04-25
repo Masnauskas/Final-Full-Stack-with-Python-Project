@@ -1,0 +1,66 @@
+{% extends 'travel_diary/base.html' %}{% load static %}{% block search_field %}
+{% endblock %}{% block content %}
+
+<h4>'{{ destination.name }}' Entries</h4>
+{% if entries %}
+<div class="row">
+  {% for entry in entries %}
+  <div class="col">
+    <div class="card" style="width: 400px">
+      {% if entry.image %}
+      <img
+        class="card-img-top"
+        src="{{ entry.image.url }}"
+        alt="{{ entry.title }}"
+        style="width: 100%"
+      />
+      {% endif %}
+      <div class="card-body">
+        <h4 class="card-title">{{ entry.title }}</h4>
+        <p class="card-text">{{ entry.text }}</p>
+
+        <!-- Edit button -->
+        <div class="d-flex gap-2">
+          <a
+            href="{% url 'travel:travelentry_edit' destination_id=destination.id entry_id=entry.id %}"
+            class="btn btn-primary"
+            >Edit</a
+          >
+          <!-- Delete button -->
+          <form
+            method="POST"
+            action="{% url 'travel:travelentry_delete' destination.id entry.id %}"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}" />
+            <button
+              type="submit"
+              class="btn btn-danger"
+              onclick="return confirm('Are you sure you want to delete this entry?')"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+  {% endfor %}
+</div>
+<a
+  href="{% url 'travel:create_travel_entry' destination_id=destination.id %}"
+  class="btn btn-primary"
+  >Add Travel Entry</a
+>
+{% else %}
+<p>No travel entries yet for '{{ destination.name }}'.</p>
+<form
+  method="POST"
+  action="{% url 'travel:create_travel_entry' destination.id %}"
+>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.path }}" />
+  <button type="submit" class="btn btn-primary">Add Travel Entry</button>
+</form>
+{% endif %} {% endblock %}

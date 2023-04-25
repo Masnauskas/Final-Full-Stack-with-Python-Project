@@ -1,0 +1,30 @@
+{% extends 'travel_diary/base.html' %}{% block content %}
+
+<h4>{{ title2 }}</h4>
+
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+  Login Error, please try again!
+</div>
+{% endif %} {% if next %} {% if user.is_authenticated %}
+<p>Pleae login.</p>
+{% endif %} {% endif %}
+
+<form method="post" action="{% url 'login' %}">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <td>Username:</td>
+      <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td>{{ form.password }}</td>
+    </tr>
+  </table>
+  <input type="submit" value="Login" />
+  <input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+<p><a href="{% url 'password_reset' %}">Forgot your passowrd?</a></p>
+{% endblock %}
