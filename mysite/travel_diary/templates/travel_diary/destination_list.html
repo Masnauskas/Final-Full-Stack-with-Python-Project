@@ -1,6 +1,30 @@
-{% extends 'travel_diary/base.html' %}{% load static %}{% block search_field %}
-{% endblock %} {% block content %}
-<h4>Destinations</h4>
+{% extends 'travel_diary/base.html' %} {% load static %}
+<!-- prettier-ignore -->
+{% block search_field %} {% endblock %} {% block content %}
+<h4>Change your info here:</h4>
+<div class="row">
+  <div class="col">
+    <form method="post">
+      {% csrf_token %} {{ user_update_form.as_p }}
+      <button type="submit" name="user_update" class="btn btn-primary">
+        Update
+      </button>
+    </form>
+  </div>
+
+  <div class="col">
+    <form method="post">
+      {% csrf_token %} {{ password_change_form.as_p }}
+      <button type="submit" name="password_change" class="btn btn-primary">
+        Change Password
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr />
+
+<h4>See your uploads below:</h4>
 <div class="row">
   {% for destination in destinations %}
   <div class="col">

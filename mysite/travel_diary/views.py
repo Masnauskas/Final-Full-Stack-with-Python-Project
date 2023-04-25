@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .forms import DestinationForm, TravelEntryForm
+from .forms import DestinationForm, TravelEntryForm, UserUpdateForm, PasswordChangeFormWithCheck
 from django.contrib import messages
 from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
@@ -12,6 +12,13 @@ from django.urls import reverse
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 import os
+from django.contrib.auth import update_session_auth_hash
+
+from django.shortcuts import render, redirect
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -130,14 +137,37 @@ def register(request):
 @login_required
 def destination_list(request):
     destinations = Destination.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        password_change_form = PasswordChangeFormWithCheck(user=request.user, data=request.POST)
+        if 'user_update' in request.POST and user_update_form.is_valid():
+            user_update_form.save()
+            messages.success(request, 'Your details have been updated')
+            return redirect('travel:user_destinations')
+        elif 'password_change' in request.POST and password_change_form.is_valid():
+            user = password_change_form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password has been changed')
+            return redirect('travel:user_destinations')
+        else:
+            messages.error('There was an error')
+    else:
+        
+        user_update_form = UserUpdateForm(instance=request.user)
+        password_change_form = PasswordChangeFormWithCheck(user=request.user)
+
     context = {
         'menu': menu,
         'title': 'Your destinations',
         'title2': 'Your destinations',
-        'destinations': destinations
+        'destinations': destinations,
+        'user_update_form': user_update_form,
+        'password_change_form': password_change_form,
     }
-    
+
     return render(request, 'travel_diary/destination_list.html', context=context)
+
 
 # LISTS ALL TRAVEL ENTRIES FOR A DESTINATION, AGAIN ONLY FOR LOGGED IN USER BY USING LOGGED IN USER ID
 @login_required
