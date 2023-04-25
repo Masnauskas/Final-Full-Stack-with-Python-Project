@@ -21,11 +21,11 @@
     <div class="card-body">
       <h4 class="card-title">{{entry.title}}</h4>
       <p class="card-text">{{entry.text}}</p>
-      <a
+      <!-- <a
         href="{% url 'travel:destination_entry' destination_id=entry.destination.id %}"
         class="btn btn-primary"
         >More</a
-      >
+      > -->
     </div>
   </div>
   <br />
@@ -34,8 +34,12 @@
 <div class="pagination">
   <span class="step-links">
     {% if page_obj.has_previous %}
-    <a href="?query={{ query }}&page=1">&laquo; first</a>
-    <a href="?query={{ query }}&page={{ page_obj.previous_page_number }}"
+    <a class="btn btn-primary btn-sm" href="?query={{ query }}&page=1"
+      >&laquo; first</a
+    >
+    <a
+      class="btn btn-primary btn-sm"
+      href="?query={{ query }}&page={{ page_obj.previous_page_number }}"
       >previous</a
     >
     {% endif %}
@@ -45,13 +49,23 @@
     </span>
 
     {% if page_obj.has_next %}
-    <a href="?query={{ query }}&page={{ page_obj.next_page_number }}">next</a>
-    <a href="?query={{ query }}&page={{ page_obj.paginator.num_pages }}"
+    <a
+      class="btn btn-primary btn-sm"
+      href="?query={{ query }}&page={{ page_obj.next_page_number }}"
+      >next</a
+    >
+    <a
+      class="btn btn-primary btn-sm"
+      href="?query={{ query }}&page={{ page_obj.paginator.num_pages }}"
       >last &raquo;</a
     >
     {% endif %}
   </span>
 </div>
 <br />
-<h4><a href="">Add new entry</a></h4>
+<h4>
+  <a class="btn btn-primary" href="{% url 'travel:create_destination'%}"
+    >Add new entry</a
+  >
+</h4>
 {% endblock %}

@@ -32,11 +32,16 @@
   <br />
   {%endfor%}
 </div>
+<br />
 <div class="pagination">
   <span class="step-links">
     {% if page_obj.has_previous %}
-    <a href="?page=1">&laquo; first</a>
-    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    <a class="btn btn-primary btn-sm" href="?page=1">&laquo; first</a>
+    <a
+      class="btn btn-primary btn-sm"
+      href="?page={{ page_obj.previous_page_number }}"
+      >previous</a
+    >
     {% endif %}
 
     <span class="current">
@@ -44,11 +49,23 @@
     </span>
 
     {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">next</a>
-    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    <a
+      class="btn btn-primary btn-sm"
+      href="?page={{ page_obj.next_page_number }}"
+      >next</a
+    >
+    <a
+      class="btn btn-primary btn-sm"
+      href="?page={{ page_obj.paginator.num_pages }}"
+      >last &raquo;</a
+    >
     {% endif %}
   </span>
 </div>
 <br />
-<h4><a href="{% url 'travel:create_destination'%}">Add new entry</a></h4>
+<h4>
+  <a class="btn btn-primary" href="{% url 'travel:create_destination'%}"
+    >Add new entry</a
+  >
+</h4>
 {% endblock %}
