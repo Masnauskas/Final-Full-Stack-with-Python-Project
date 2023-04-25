@@ -6,9 +6,9 @@ from django.contrib.auth import password_validation
 
 
 class DestinationForm(forms.ModelForm):
-    name = forms.CharField(max_length=100, label='Country', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    description = forms.CharField(label='Description', widget=forms.Textarea(attrs={'class': 'form-control'}))
-    image = forms.ImageField(label='Add Image', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    name = forms.CharField(max_length=100, label='Country', help_text='', widget=forms.TextInput(attrs={'class': 'form-control'}),error_messages={'required': '',} )
+    description = forms.CharField(label='Description', help_text='', widget=forms.Textarea(attrs={'class': 'form-control'}),error_messages={'required': '',})
+    image = forms.ImageField(label='Add Image', help_text='', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),error_messages={'required': '',})
     class Meta:
         
         model = Destination

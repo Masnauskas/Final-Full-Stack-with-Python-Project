@@ -6,14 +6,7 @@
   {% csrf_token %}
 
   <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %} {% if form.errors %}
-    <div class="alert alert-danger">
-      <strong>Error!</strong> Please correct the following errors:<br />
-      {% for field, errors in form.errors.items %} {{ field }}:
-      {#prettier-ignore #} {{errors|join:"," }}<br />
-      {% endfor %}
-    </div>
-    {% endif %} {{ form.as_p }}
+    {% csrf_token %} {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   <br />
