@@ -61,21 +61,16 @@ class TravelEntryForm(forms.ModelForm):
         }
     )
 
-    def __init__(self, default_destination, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        default_destination = kwargs.pop('default_destination', None)
         super().__init__(*args, **kwargs)
-        self.fields['destination'].initial = default_destination
-        self.fields['destination'].widget.attrs['disabled'] = True  # make the field disabled
+        if default_destination:
+            self.fields['destination'].initial = default_destination
+            self.fields['destination'].widget.attrs['disabled'] = True
 
     class Meta:
         model = TravelEntry
-        fields = ('title', 'text', 'image')
-
-   
-        
-        
-  
-
-
+        fields = ['title', 'text', 'image']
 
 class UserUpdateForm(UserChangeForm):
     password = None
@@ -95,9 +90,6 @@ class UserUpdateForm(UserChangeForm):
         self.fields['username'].error_messages.pop('required')
         self.fields['email'].error_messages.pop('required')
         
-
-
-
 class PasswordChangeFormWithCheck(PasswordChangeForm):
     old_password = forms.CharField(label='Current Password',widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
     new_password1 = forms.CharField(label='New Password',widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))

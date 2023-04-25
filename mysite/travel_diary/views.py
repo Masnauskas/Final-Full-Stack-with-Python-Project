@@ -214,7 +214,7 @@ def create_travel_entry(request, destination_id):
     destination = Destination.objects.get(id=destination_id)
     default_destination = destination
     if request.method == 'POST':
-        form = TravelEntryForm(default_destination, request.POST, request.FILES)
+        form = TravelEntryForm(request.POST, request.FILES,default_destination)
         if form.is_valid():
             travel_entry = form.save(commit=False)
             travel_entry.destination = destination
@@ -222,7 +222,7 @@ def create_travel_entry(request, destination_id):
             messages.success(request, 'Travel entry added successfully.')
             return redirect('travel:destinations')
     else:
-        form = TravelEntryForm(default_destination)
+        form = TravelEntryForm(default_destination=default_destination)
     
     context = {
         'menu': menu,
@@ -316,22 +316,47 @@ def edit_destination(request, id):
 @login_required
 def edit_travel_entry(request, destination_id, entry_id):
     destination = get_object_or_404(Destination, id=destination_id, user=request.user)
-    entry = get_object_or_404(TravelEntry, id=entry_id, destination=destination)
+    travel_entry = get_object_or_404(TravelEntry, id=entry_id, destination=destination)
+
     if request.method == 'POST':
-        form = TravelEntryForm(request.POST, request.FILES, instance=entry)
+        form = TravelEntryForm(request.POST, request.FILES, instance=travel_entry)
         if form.is_valid():
-            form.save()
-            messages.success(request, f"Travel Entry '{entry.title}' has been updated.")
+            travel_entry = form.save(commit=False)
+            travel_entry.destination = destination
+            travel_entry.save()
+            messages.success(request, 'Travel entry updated successfully.')
             return redirect('travel:travelentry_list', destination_id=destination_id)
     else:
-        form = TravelEntryForm(instance=entry)
+        form = TravelEntryForm(instance=travel_entry, default_destination=destination)
     context = {
         'menu': menu,
-        'title': f'Edit entry: {entry.title}',
-        'title2': f'Edit entry: {entry.title}',
+        'title': f'Edit entry: {travel_entry.title}',
+        'title2': f'Edit entry: {travel_entry.title}',
         'form': form,
+        'destination': destination,
+        'travel_entry': travel_entry
     }
     return render(request, 'travel_diary/edit_travel_entry.html', context=context)
+
+# @login_required
+# def edit_travel_entry(request, destination_id, entry_id):
+#     destination = get_object_or_404(Destination, id=destination_id, user=request.user)
+#     entry = get_object_or_404(TravelEntry, id=entry_id, destination=destination)
+#     if request.method == 'POST':
+#         form = TravelEntryForm(request.POST, request.FILES, instance=entry)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, f"Travel Entry '{entry.title}' has been updated.")
+#             return redirect('travel:travelentry_list', destination_id=destination_id)
+#     else:
+#         form = TravelEntryForm(instance=entry)
+#     context = {
+#         'menu': menu,
+#         'title': f'Edit entry: {entry.title}',
+#         'title2': f'Edit entry: {entry.title}',
+#         'form': form,
+#     }
+#     return render(request, 'travel_diary/edit_travel_entry.html', context=context)
 
 
 # def password_reset_confirm(request):
