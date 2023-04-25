@@ -16,3 +16,8 @@ body {
 .custom-css-index-visits {
   text-align: center;
 }
+ul.errorlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

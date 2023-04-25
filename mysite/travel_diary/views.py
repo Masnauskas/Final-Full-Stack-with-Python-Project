@@ -137,6 +137,10 @@ def register(request):
 @login_required
 def destination_list(request):
     destinations = Destination.objects.filter(user=request.user)
+    
+    query = request.GET.get('q')
+    if query:
+        destinations = destinations.filter(name__icontains=query)
 
     if request.method == 'POST':
         user_update_form = UserUpdateForm(request.POST, instance=request.user)
@@ -164,6 +168,7 @@ def destination_list(request):
         'destinations': destinations,
         'user_update_form': user_update_form,
         'password_change_form': password_change_form,
+        'query': query,
     }
 
     return render(request, 'travel_diary/destination_list.html', context=context)

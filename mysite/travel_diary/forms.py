@@ -17,14 +17,58 @@ class DestinationForm(forms.ModelForm):
    
 
 class TravelEntryForm(forms.ModelForm):
-    title = forms.CharField(max_length=200, label='Title', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    text = forms.CharField(label='Description', widget=forms.Textarea(attrs={'class': 'form-control'}))
-    image = forms.ImageField(label='Add Image', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
-    destination = forms.ModelChoiceField(queryset=Destination.objects.all(), label='Country', widget=forms.Select(attrs={'class': 'form-control'}))
+    title = forms.CharField(
+        max_length=200, label='Title', help_text='', 
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'required': 'True', 
+            'placeholder':"",
+        }),
+        error_messages={
+            'required': '',
+        }
+    )
+    text = forms.CharField(
+        label='Description', help_text='', 
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'required': 'True',
+            'placeholder':"",
+        }),
+        error_messages={
+            'required': '',
+        }
+    )
+    image = forms.ImageField(
+        label='Add Image', help_text='', 
+        widget=forms.ClearableFileInput(attrs={
+            'class': 'form-control',
+            'required': 'True',
+            'placeholder':"",
+        }),
+        error_messages={
+            'required': '',
+        }
+    )
+    destination = forms.ModelChoiceField(
+        queryset=Destination.objects.all(), required=False, 
+        label='Country', widget=forms.Select(attrs={
+            'class': 'form-control',
+            'required': 'True',
+        }),
+        error_messages={
+            'required': '',
+        }
+    )
 
     class Meta:
         model = TravelEntry
         fields = ('destination', 'title', 'text', 'image')
+
+
+   
+        
+        
   
 
 
@@ -51,9 +95,9 @@ class UserUpdateForm(UserChangeForm):
 
 
 class PasswordChangeFormWithCheck(PasswordChangeForm):
-    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
-    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
-    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    old_password = forms.CharField(label='Current Password',widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    new_password1 = forms.CharField(label='New Password',widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    new_password2 = forms.CharField(label='Repeat New Password',widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
 
     class Meta:
         model = User
